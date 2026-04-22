@@ -466,6 +466,39 @@
       .section-padding { padding: 80px 0; }
     }
 
+    /* === CURSOR GLOW === */
+    .cursor-glow {
+      position: fixed; width: 300px; height: 300px; border-radius: 50%; pointer-events: none; z-index: 9998;
+      background: radial-gradient(circle, rgba(212,160,122,0.06) 0%, transparent 70%);
+      transform: translate(-50%, -50%); transition: opacity 0.3s;
+      mix-blend-mode: screen; opacity: 0;
+    }
+    .cursor-glow.visible { opacity: 1; }
+    @media (max-width: 768px) { .cursor-glow { display: none; } }
+
+    /* === HERO SHIMMER === */
+    .hero h1 {
+      background: linear-gradient(
+        90deg,
+        var(--champagne) 0%, var(--champagne) 40%,
+        var(--rose-light) 50%,
+        var(--champagne) 60%, var(--champagne) 100%
+      );
+      background-size: 200% 100%;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: heroShimmer 4s ease-in-out infinite;
+    }
+    .hero h1 em {
+      background: linear-gradient(90deg, var(--rose), var(--gold), var(--rose));
+      background-size: 200% 100%;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: heroShimmer 4s ease-in-out infinite;
+      animation-delay: 0.5s;
+    }
+    @keyframes heroShimmer { 0%, 100% { background-position: 100% 50%; } 50% { background-position: 0% 50%; } }
+
     /* === PRELOADER === */
     .preloader {
       position: fixed; inset: 0; z-index: 99999; background: var(--bg);
@@ -528,6 +561,9 @@
   </style>
 </head>
 <body>
+  <!-- CURSOR GLOW -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
   <!-- PRELOADER -->
   <div class="preloader" id="preloader">
     <div class="preloader-logo">Aura<span>.</span></div>
@@ -765,17 +801,17 @@
           <img src="https://cdn.leonardo.ai/users/ef0f6489-b06e-416a-a309-e33918b28d93/generations/1f13e1f9-18db-6e90-a6fb-e01e2856cf05/lucid-origin_professional_photo_of_professional_photo_of_Detail_shot_inside_a_luxury_nail_sal-0.jpg" alt="Polish collection wall display">
           <div class="gallery-item-overlay"><span class="gallery-item-label">Our Polish Wall · 200+ Colors</span></div>
         </div>
-        <div class="gallery-item reveal reveal-d1" data-category="pedicure">
-          <img src="https://cdn.leonardo.ai/users/ef0f6489-b06e-416a-a309-e33918b28d93/generations/1f13e1f0-b25a-6200-ad59-28f58b383aac/lucid-origin_professional_photo_of_professional_photo_of_Close-up_of_a_woman_s_hands_with_fre-0.jpg" alt="Blush pink gel nails close-up">
-          <div class="gallery-item-overlay"><span class="gallery-item-label">Spa Pedicure · Nude</span></div>
+        <div class="gallery-item reveal reveal-d1" data-category="gel">
+          <img src="https://cdn.leonardo.ai/users/ef0f6489-b06e-416a-a309-e33918b28d93/generations/1f13e282-f5fd-66a0-9f3b-5b0ea1dec349/lucid-origin_professional_photo_of_professional_photo_of_Close-up_of_a_woman_s_hands_resting_-0.jpg" alt="Chrome stiletto nails close-up">
+          <div class="gallery-item-overlay"><span class="gallery-item-label">Chrome Stiletto · Rose Gold</span></div>
         </div>
-        <div class="gallery-item reveal reveal-d2" data-category="french">
-          <img src="https://cdn.leonardo.ai/users/ef0f6489-b06e-416a-a309-e33918b28d93/generations/1f13e1f4-4603-64e0-b65e-ad5414a99cfe/lucid-origin_professional_photo_of_professional_photo_of_Elegant_hand_with_deep_burgundy_chro-0.jpg" alt="Deep burgundy chrome nails">
-          <div class="gallery-item-overlay"><span class="gallery-item-label">Micro French · Stiletto</span></div>
+        <div class="gallery-item reveal reveal-d2" data-category="art">
+          <img src="https://cdn.leonardo.ai/users/ef0f6489-b06e-416a-a309-e33918b28d93/generations/1f13e28a-6ec1-6620-be05-98215f972671/lucid-origin_professional_photo_of_professional_photo_of_Extreme_close-up_macro_shot_of_intri-0.jpg" alt="Hand-painted nail art with gold leaf">
+          <div class="gallery-item-overlay"><span class="gallery-item-label">Gold Leaf · Botanical Art</span></div>
         </div>
         <div class="gallery-item reveal reveal-d3" data-category="gel">
-          <img src="https://cdn.leonardo.ai/users/ef0f6489-b06e-416a-a309-e33918b28d93/generations/1f13e1f6-604e-60a0-b9a2-435aa8303daf/lucid-origin_professional_photo_of_professional_photo_of_Overhead_flat-lay_view_of_a_luxury_n-0.jpg" alt="Overhead view of manicure station">
-          <div class="gallery-item-overlay"><span class="gallery-item-label">Station Setup · Flat Lay</span></div>
+          <img src="https://cdn.leonardo.ai/users/ef0f6489-b06e-416a-a309-e33918b28d93/generations/1f13e28d-9b4b-6a30-a3f0-6dc1632dd6dc/lucid-origin_professional_photo_of_professional_photo_of_Close-up_of_a_nail_technician_carefu-0.jpg" alt="Nail technician painting gold detail">
+          <div class="gallery-item-overlay"><span class="gallery-item-label">Artisan at Work</span></div>
         </div>
       </div>
     </div>
@@ -1180,6 +1216,23 @@
       });
     }, { threshold: 0 });
     stickyObserver.observe(heroSection);
+
+    // === CURSOR GLOW ===
+    const cursorGlow = document.getElementById('cursorGlow');
+    let cursorX = 0, cursorY = 0, glowX = 0, glowY = 0;
+    document.addEventListener('mousemove', (e) => {
+      cursorX = e.clientX; cursorY = e.clientY;
+      cursorGlow.classList.add('visible');
+    });
+    document.addEventListener('mouseleave', () => cursorGlow.classList.remove('visible'));
+    function animateCursor() {
+      glowX += (cursorX - glowX) * 0.08;
+      glowY += (cursorY - glowY) * 0.08;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
 
     // === PRELOADER ===
     window.addEventListener('load', () => {
