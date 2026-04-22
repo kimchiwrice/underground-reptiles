@@ -7,7 +7,7 @@
   <meta name="description" content="West Hollywood's premier nail lounge. Gel extensions, hand-painted nail art, spa pedicures, and lash lifts. Vietnamese-owned. Walk-ins welcome.">
   <meta property="og:title" content="Aura Nail Lounge — West Hollywood">
   <meta property="og:description" content="Luxury nail art & spa. Gel extensions, nail art, spa pedicures. Book online.">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💅</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23D4A07A'/><text y='62' x='50' text-anchor='middle' font-family='serif' font-size='36' fill='%230C0A0E' font-weight='bold'>A</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Poppins:wght@300;400;500;600;700&family=Cormorant:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
@@ -234,9 +234,14 @@
       content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
       background: linear-gradient(90deg, transparent, var(--rose), transparent); opacity: 0; transition: opacity 0.4s;
     }
-    .service-card:hover { transform: translateY(-6px); border-color: rgba(212,160,122,0.15); box-shadow: 0 20px 48px rgba(0,0,0,0.2); }
+    .service-card:hover { transform: translateY(-6px); border-color: rgba(212,160,122,0.2); box-shadow: 0 20px 48px rgba(0,0,0,0.3), 0 0 60px rgba(212,160,122,0.06); }
     .service-card:hover::before { opacity: 1; }
-    .service-emoji { font-size: 2rem; margin-bottom: 20px; display: block; }
+    .service-card:hover .service-icon { background: rgba(212,160,122,0.1); border-color: rgba(212,160,122,0.2); }
+    .service-icon {
+      width: 48px; height: 48px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;
+      border-radius: 14px; background: rgba(212,160,122,0.06); border: 1px solid rgba(212,160,122,0.1);
+    }
+    .service-icon svg { width: 24px; height: 24px; stroke: var(--rose); stroke-width: 1.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
     .service-card h3 { font-family: var(--font-display); font-size: 1.15rem; color: var(--champagne); margin-bottom: 8px; }
     .service-card p { font-size: 0.85rem; color: var(--text-2); line-height: 1.65; margin-bottom: 16px; }
     .service-price { font-family: var(--font-accent); font-size: 1rem; color: var(--rose); font-style: italic; }
@@ -461,6 +466,56 @@
       .section-padding { padding: 80px 0; }
     }
 
+    /* === PRELOADER === */
+    .preloader {
+      position: fixed; inset: 0; z-index: 99999; background: var(--bg);
+      display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+      transition: opacity 0.6s var(--ease), visibility 0.6s;
+    }
+    .preloader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+    .preloader-logo { font-family: var(--font-display); font-size: 2.2rem; color: var(--champagne); letter-spacing: -0.01em; opacity: 0; animation: preloaderFade 0.8s var(--ease) 0.2s forwards; }
+    .preloader-logo span { color: var(--rose); }
+    .preloader-bar { width: 120px; height: 1px; background: rgba(212,160,122,0.15); border-radius: 2px; overflow: hidden; opacity: 0; animation: preloaderFade 0.6s var(--ease) 0.5s forwards; }
+    .preloader-fill { width: 0; height: 100%; background: linear-gradient(90deg, var(--rose), var(--gold)); animation: preloaderProgress 1.2s var(--ease) 0.6s forwards; }
+    @keyframes preloaderFade { to { opacity: 1; } }
+    @keyframes preloaderProgress { to { width: 100%; } }
+
+    /* === SCROLL PROGRESS === */
+    .scroll-progress { position: fixed; top: 0; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--rose), var(--gold)); z-index: 101; transition: width 0.05s linear; }
+
+    /* === BOOKING MODAL === */
+    .booking-modal {
+      position: fixed; inset: 0; z-index: 10001; background: rgba(12,10,14,0.92);
+      backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: all 0.4s var(--ease);
+    }
+    .booking-modal.active { opacity: 1; visibility: visible; }
+    .booking-modal-card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 48px; max-width: 420px; text-align: center; transform: scale(0.9) translateY(20px);
+      transition: transform 0.5s var(--ease);
+    }
+    .booking-modal.active .booking-modal-card { transform: scale(1) translateY(0); }
+    .booking-modal-check {
+      width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 24px;
+      background: linear-gradient(135deg, rgba(212,160,122,0.15), rgba(201,169,110,0.1));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .booking-modal-check svg { width: 28px; height: 28px; stroke: var(--rose); stroke-width: 2; fill: none; stroke-dasharray: 50; stroke-dashoffset: 50; animation: checkDraw 0.5s var(--ease) 0.3s forwards; }
+    @keyframes checkDraw { to { stroke-dashoffset: 0; } }
+    .booking-modal h3 { font-family: var(--font-display); font-size: 1.4rem; color: var(--champagne); margin-bottom: 8px; }
+    .booking-modal p { font-size: 0.9rem; color: var(--text-2); line-height: 1.7; margin-bottom: 6px; }
+    .booking-modal-detail { font-family: var(--font-accent); font-size: 1.05rem; color: var(--rose); font-style: italic; margin-bottom: 24px; }
+    .booking-modal-close {
+      background: transparent; border: 1px solid var(--border); color: var(--text-2);
+      padding: 10px 28px; border-radius: 100px; font-family: var(--font-body); font-size: 0.82rem;
+      font-weight: 500; cursor: pointer; transition: all 0.3s var(--ease);
+    }
+    .booking-modal-close:hover { color: var(--champagne); border-color: rgba(212,160,122,0.3); }
+
+    /* === ABOUT FEATURE ICONS === */
+    .about-feature-icon svg { width: 18px; height: 18px; stroke: var(--rose); stroke-width: 1.5; fill: none; }
+
     /* === STICKY MOBILE CTA === */
     .sticky-cta {
       display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 98;
@@ -473,6 +528,15 @@
   </style>
 </head>
 <body>
+  <!-- PRELOADER -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-logo">Aura<span>.</span></div>
+    <div class="preloader-bar"><div class="preloader-fill"></div></div>
+  </div>
+
+  <!-- SCROLL PROGRESS -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <div class="mesh-bg"></div>
 
   <!-- NAV -->
@@ -568,15 +632,15 @@
           <p class="reveal">Now we have six stations, three full-time artists, and a waitlist most Saturdays. We still do things her way — every set is a conversation, not an assembly line. You tell us what you're feeling, we make it happen. No rush, no shortcuts.</p>
           <div class="about-features reveal">
             <div class="about-feature">
-              <div class="about-feature-icon">🇻🇳</div>
+              <div class="about-feature-icon"><svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/></svg></div>
               <span>Vietnamese-owned</span>
             </div>
             <div class="about-feature">
-              <div class="about-feature-icon">✨</div>
+              <div class="about-feature-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
               <span>6 licensed artists</span>
             </div>
             <div class="about-feature">
-              <div class="about-feature-icon">💅</div>
+              <div class="about-feature-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
               <span>Gel-X & BIAB certified</span>
             </div>
           </div>
@@ -593,49 +657,49 @@
       <p class="section-desc reveal">Transparent pricing. No surprises. Tips appreciated but never expected.</p>
       <div class="services-grid">
         <div class="service-card reveal reveal-d1">
-          <span class="service-emoji">💅</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 12l2.5 2.5L16 9"/></svg></div>
           <h3>Gel-X Extensions</h3>
           <p>Full soft gel tip extensions with your choice of shape — coffin, almond, stiletto, square. Includes shaping, cuticle care, and one color.</p>
           <span class="service-price">Starting at $65</span>
         </div>
         <div class="service-card reveal reveal-d2">
-          <span class="service-emoji">🎨</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 19l-7-7 1.41-1.41L12 16.17l5.59-5.58L19 12l-7 7z"/><path d="M2 4h20M7 9h10M4 14h16"/></svg></div>
           <h3>Hand-Painted Nail Art</h3>
           <p>Freehand designs, character art, French tips with a twist, chrome, 3D florals — whatever you bring on your Pinterest board, we'll make it real.</p>
           <span class="service-price">Starting at $15/nail</span>
         </div>
         <div class="service-card reveal reveal-d3">
-          <span class="service-emoji">🌿</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M7 21a5 5 0 0 0 10 0"/><circle cx="12" cy="7" r="5"/><path d="M2 12h4M18 12h4"/></svg></div>
           <h3>Spa Pedicure</h3>
           <p>40-minute treatment: hot towel wrap, sugar scrub, extended massage, cuticle care, and gel polish. Most clients close their eyes before we even start the massage.</p>
           <span class="service-price">Starting at $55</span>
         </div>
         <div class="service-card reveal reveal-d4">
-          <span class="service-emoji">✨</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div>
           <h3>Dip Powder</h3>
           <p>Lightweight, chip-resistant, lasts 3-4 weeks without lifting. 200+ colors in stock. Great if you're hard on your nails.</p>
           <span class="service-price">Starting at $45</span>
         </div>
         <div class="service-card reveal reveal-d1">
-          <span class="service-emoji">🌙</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
           <h3>Lash Lifts</h3>
           <p>Natural lash perm with keratin treatment. Opens up your eyes without extensions. Lasts 6-8 weeks. Zero maintenance.</p>
           <span class="service-price">Starting at $75</span>
         </div>
         <div class="service-card reveal reveal-d2">
-          <span class="service-emoji">🩹</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94L6.73 20.15a2.13 2.13 0 0 1-3-3l6.79-6.79a6 6 0 0 1 7.94-7.94l-3.76 3.88z"/></svg></div>
           <h3>Nail Repair & Fill</h3>
           <p>Broken nail? Lifted gel? We fix it same-day. Gel fill-ins every 2-3 weeks keep your set looking fresh without a full redo.</p>
           <span class="service-price">Starting at $35</span>
         </div>
         <div class="service-card reveal reveal-d3">
-          <span class="service-emoji">💎</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
           <h3>Acrylic Full Set</h3>
           <p>Classic acrylic sculpted or tip overlay. Strong, fully customizable, and built to last. Ideal if you love length without compromising strength.</p>
           <span class="service-price">Starting at $50</span>
         </div>
         <div class="service-card reveal reveal-d4">
-          <span class="service-emoji">🧖‍♀️</span>
+          <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
           <h3>Brow Lamination</h3>
           <p>Restructures brow hairs for a full, fluffy, brushed-up look. Includes tinting. Lasts 4-6 weeks. No daily styling needed.</p>
           <span class="service-price">Starting at $65</span>
@@ -745,32 +809,32 @@
           <h3>Your Appointment</h3>
           <div class="service-select-grid">
             <div class="service-option selected" data-service="Gel-X Extensions">
-              <div class="service-option-icon">💅</div>
+              <div class="service-option-icon" style="font-family:var(--font-accent);font-size:1.2rem;color:var(--rose);font-style:italic;">GX</div>
               <div class="service-option-name">Gel-X</div>
               <div class="service-option-price">from $65</div>
             </div>
             <div class="service-option" data-service="Nail Art">
-              <div class="service-option-icon">🎨</div>
+              <div class="service-option-icon" style="font-family:var(--font-accent);font-size:1.2rem;color:var(--rose);font-style:italic;">NA</div>
               <div class="service-option-name">Nail Art</div>
               <div class="service-option-price">from $15/nail</div>
             </div>
             <div class="service-option" data-service="Spa Pedicure">
-              <div class="service-option-icon">🌿</div>
+              <div class="service-option-icon" style="font-family:var(--font-accent);font-size:1.2rem;color:var(--rose);font-style:italic;">SP</div>
               <div class="service-option-name">Pedicure</div>
               <div class="service-option-price">from $55</div>
             </div>
             <div class="service-option" data-service="Dip Powder">
-              <div class="service-option-icon">✨</div>
+              <div class="service-option-icon" style="font-family:var(--font-accent);font-size:1.2rem;color:var(--rose);font-style:italic;">DP</div>
               <div class="service-option-name">Dip Powder</div>
               <div class="service-option-price">from $45</div>
             </div>
             <div class="service-option" data-service="Lash Lift">
-              <div class="service-option-icon">🌙</div>
+              <div class="service-option-icon" style="font-family:var(--font-accent);font-size:1.2rem;color:var(--rose);font-style:italic;">LL</div>
               <div class="service-option-name">Lash Lift</div>
               <div class="service-option-price">from $75</div>
             </div>
             <div class="service-option" data-service="Acrylic Full Set">
-              <div class="service-option-icon">💎</div>
+              <div class="service-option-icon" style="font-family:var(--font-accent);font-size:1.2rem;color:var(--rose);font-style:italic;">AF</div>
               <div class="service-option-name">Acrylic</div>
               <div class="service-option-price">from $50</div>
             </div>
@@ -933,6 +997,20 @@
     </div>
   </div>
 
+  <!-- BOOKING MODAL -->
+  <div class="booking-modal" id="bookingModal">
+    <div class="booking-modal-card">
+      <div class="booking-modal-check">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>You're All Set</h3>
+      <p id="bookingModalText">Gel-X Extensions with Linh</p>
+      <p class="booking-modal-detail" id="bookingModalTime">Tomorrow at 10:30 AM</p>
+      <p style="font-size:0.82rem;color:var(--text-3);margin-bottom:28px;">We'll text you a confirmation. See you soon.</p>
+      <button class="booking-modal-close" id="bookingModalClose">Done</button>
+    </div>
+  </div>
+
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close" id="lightboxClose">&times;</button>
@@ -1081,7 +1159,16 @@
       const service = document.querySelector('.service-option.selected')?.dataset.service || 'Service';
       const stylist = document.querySelector('.stylist-chip.selected')?.dataset.stylist || 'Artist';
       const time = document.querySelector('.time-slot.selected')?.dataset.time || 'Time';
-      alert('Booking confirmed!\n\n' + service + ' with ' + stylist + '\nTomorrow at ' + time + '\n\nWe\'ll text you a confirmation. See you soon!');
+      const modal = document.getElementById('bookingModal');
+      document.getElementById('bookingModalText').textContent = service + ' with ' + stylist;
+      document.getElementById('bookingModalTime').textContent = 'Tomorrow at ' + time;
+      modal.classList.add('active');
+    });
+    document.getElementById('bookingModalClose').addEventListener('click', () => {
+      document.getElementById('bookingModal').classList.remove('active');
+    });
+    document.getElementById('bookingModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('bookingModal')) document.getElementById('bookingModal').classList.remove('active');
     });
 
     // === STICKY CTA ===
@@ -1093,6 +1180,29 @@
       });
     }, { threshold: 0 });
     stickyObserver.observe(heroSection);
+
+    // === PRELOADER ===
+    window.addEventListener('load', () => {
+      setTimeout(() => { document.getElementById('preloader').classList.add('done'); }, 1800);
+    });
+
+    // === SCROLL PROGRESS BAR ===
+    const scrollProgressEl = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', () => {
+      const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+      scrollProgressEl.style.width = scrolled + '%';
+    });
+
+    // === PARALLAX PHOTO BREAKS ===
+    const photoBreaks = document.querySelectorAll('.photo-break-img');
+    window.addEventListener('scroll', () => {
+      photoBreaks.forEach(img => {
+        const rect = img.parentElement.getBoundingClientRect();
+        const speed = 0.3;
+        const yPos = -(rect.top * speed);
+        img.style.transform = 'translateY(' + yPos + 'px)';
+      });
+    });
 
     // === SMOOTH ANCHOR SCROLL ===
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
