@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WDKWY31R2H"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WDKWY31R2H');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aura Nail Lounge — Luxury Nail Art & Spa in West Hollywood</title>
@@ -1132,6 +1140,19 @@
       });
     }, { threshold: 0.5 });
     countEls.forEach(el => countObserver.observe(el));
+
+    // Counter failsafe — force final values if tab was backgrounded
+    function forceCountValues() {
+      countEls.forEach(el => {
+        const target = parseFloat(el.dataset.target);
+        const isDecimal = target % 1 !== 0;
+        el.textContent = isDecimal ? target.toFixed(1) : Math.floor(target).toLocaleString();
+      });
+    }
+    setTimeout(forceCountValues, 5000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') forceCountValues();
+    });
 
     // === GALLERY FILTERS ===
     const filters = document.querySelectorAll('.gallery-filter');
